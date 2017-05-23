@@ -1,5 +1,8 @@
 package cz.fi.muni.ia158.messenger;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.Port;
@@ -12,13 +15,16 @@ import lejos.robotics.SampleProvider;
 import lejos.utility.Delay;
 
 public class Messenger {
+	
+	private BlockingQueue<String> messages = new LinkedBlockingQueue<>();
+	
+	public Messenger(){
+		new Thread(new MovementControl(messages)).start();
+		new Thread(new TouchSensorControl(messages)).start();
+	}
 
 	public static void main(String[] args) throws InterruptedException {
-
-		
-		//colorSensor();
-		new TouchSensorSensor().run();
-		//touchSensor();
+		new Messenger();
 	}
 
 	private static void touchSensor() {
