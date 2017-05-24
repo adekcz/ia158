@@ -20,7 +20,9 @@ public class Messenger {
 	
 	public Messenger(){
 		new Thread(new MovementControl(messages)).start();
-		new Thread(new TouchSensorControl(messages)).start();
+		Thread touchSensorControl = new Thread(new TouchSensorControl(messages));
+		touchSensorControl.setPriority(Thread.MAX_PRIORITY);
+		touchSensorControl.start();
 	}
 
 	public static void main(String[] args) throws InterruptedException {
